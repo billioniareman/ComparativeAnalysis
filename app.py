@@ -1,4 +1,6 @@
 # main.py
+import base64
+
 import streamlit as st
 import os
 import pandas as pd
@@ -8,22 +10,19 @@ import home
 import numpy as np
 import matplotlib.pyplot as plt
 
-st.set_page_config(
-    page_title="Rain Data Hub",
-    page_icon="🌧️",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'Get Help': 'https://www.extremelycoolapp.com/help',
-        'Report a bug': "https://www.extremelycoolapp.com/bug",
-        'About': "# This is a header. This is an *extremely* cool app!"
-    }
-)
+
 def fetch_feature(df):
     return df.columns
 
 
 def main():
+    st.set_page_config(
+        page_title="Rain Data Hub",
+        page_icon="🌧️",
+        layout="wide",
+        initial_sidebar_state="expanded",
+    )
+
     menu = ["Home", "Compare Algos", "Visualize Algos"]
     choice = st.sidebar.selectbox("Go to", menu)
 
@@ -43,7 +42,7 @@ def main():
             df = pd.read_csv(selected_dataset)
             feature = fetch_feature(df)
             selected_feature = st.multiselect("Choose a Feature", feature, default=None)
-            target_options = st.selectbox("Choose a target", ['rainfall'])
+            target_options = st.selectbox("Choose a target", feature)
             X = df[selected_feature]
             y = df[target_options]
             X_train, X_test, y_train, y_test = train_test_split_data(df=X, target_column=y)
